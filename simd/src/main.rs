@@ -1,10 +1,14 @@
 use std::arch::x86_64::*;
 use std::time::{Duration, Instant};
+// use thousands::Separable;
 
 fn main() {
     let cases = vec![Case::Tup, Case::Simd];
     for case in cases {
-        case.test(vec![1, 10,100,1000,10000, 100000, 1000000, 10000000], 200);
+        case.test(
+            vec![1, 10,100,1000,10_000, 100_000, 1_000_000, 10_000_000],
+            200
+        );
     }
 }
 
@@ -24,7 +28,9 @@ impl Case {
                 let _result = self.run(n);
             }
             let duration = start.elapsed();
-            println!("Iterations: {}, Total time: {:?}", i, duration);
+            println!("Iterations: {}, Total time: {:?}",
+                my_fancy_thousands(i),
+                duration);
         }
     }
     fn run(&self, n: usize) {
@@ -44,9 +50,8 @@ fn fib_simd(n: usize) -> u32 {
                 _mm_shuffle_ps(b, b, 243)  //11110011 -> (0 , x0, 0, 0)
             );
         }
-        return _mm_cvtss_f32(b) as u32; // get first element of b
+        return _mm_cvtss_f32(b) as u32;         //get first element of b
     }
-    
 }
 
 fn fib_tup(n: usize) -> u32 {
@@ -55,4 +60,15 @@ fn fib_tup(n: usize) -> u32 {
         b = (b.1, b.0+b.1);
     }
     b.0 as u32
+}
+
+fn my_fancy_thousands(i: usize) -> String {
+    i.to_string()
+    .as_bytes()
+    .rchunks(3)
+    .rev()
+    .map(std::str::from_utf8)
+    .collect::<Result<Vec<&str>, _>>()
+    .unwrap()
+    .join(",")
 }
