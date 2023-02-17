@@ -1,0 +1,9 @@
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+simd/.DS_Store
+simd/target
+simd/target/
+simd/target/*
