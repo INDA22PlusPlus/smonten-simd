@@ -4,7 +4,7 @@ use std::time::{Duration, Instant};
 fn main() {
     let cases = vec![Case::Tup, Case::Simd];
     for case in cases {
-        case.test(vec![1, 10,100,1000,10000, 100000, 1000000], 200);
+        case.test(vec![1, 10,100,1000,10000, 100000, 1000000, 10000000], 200);
     }
 }
 
